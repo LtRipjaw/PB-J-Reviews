@@ -1,7 +1,32 @@
 {% extends "base.html" %}
-{% block title %}{% endblock %}
 {% block content %}
-<h1 class="title">
-    Welcome {{name}}!
+<div class="container text-center">
+  <h1 class="display-4">
+      Welcome {{ name }}!
   </h1>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h2>
+          Movie List 
+          <a href="{{ url_for('movies') }}">
+            <button type="button" class="btn btn-light">Here</button>
+          </a>
+        </h2>
+        <h2>
+          Show List 
+          <a href="{{ url_for('shows') }}">
+            <button type="button" class="btn btn-light">Here</button>
+          </a>
+        </h2>
+        <h2>
+          Game List 
+          <a href="{{ url_for('games') }}">
+            <button type="button" class="btn btn-light">Here</button>
+          </a>
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

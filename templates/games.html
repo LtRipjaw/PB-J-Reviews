@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container bg-white">
+    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#modalcreate">Add New Review</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><abbr title="Title">Title</abbr></th>
+                <th><abbr title="Genre">Genre</abbr></th>
+                <th><abbr title="Developer">developer</abbr></th>
+                <th><abbr title="Franchise">Franchise</abbr></th>
+                <th><abbr title="Rating">Rating</abbr></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+            <tr>
+                <td>{{ game.title }}</td>
+                <td>{{ game.genre }}</td>
+                <td>{{ game.developer }}</td>
+                <td>{{ game.franchise }}</td>
+                <td>{{ game.rating }}</td>
+                <td>
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#modaledit">Edit</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit game Review</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="game-title" class="col-form-label">Title</label>
+                        <input type="text" class="form-control" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="game-genre" class="col-form-label">Genre</label>
+                        <input type="text" class="form-control" name="genre"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-developer" class="col-form-label">Developer</label>
+                        <input class="form-control" name="developer"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-franchise" class="col-form-label">Franchise</label>
+                        <input type="text" class="form-control" name="franchise"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-rating" class="col-form-label">Rating</label>
+                        <input type="number" class="form-control" name="rating"></input>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalcreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create New game Review</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('create_game') }}" method="POST">
+                    <div class="form-group">
+                        <label for="game-title" class="col-form-label">Title</label>
+                        <input type="text" class="form-control" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="game-genre" class="col-form-label">Genre</label>
+                        <input type="text" class="form-control" name="genre"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-developer" class="col-form-label">Developer</label>
+                        <input class="form-control" name="developer"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-franchise" class="col-form-label">Franchise</label>
+                        <input type="text" class="form-control" name="franchise"></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-rating" class="col-form-label">Rating</label>
+                        <input type="number" class="form-control" name="rating"></input>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-ZSTVPPVoK4Z83IYJM5lYjWPG+YtF/er1z+LcbL5ZCVXDD9dZsiqFT+0OAlaTWfAA"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+gbgxc5wc9eVkRx03WO6c6lvz0Ww53cu1WM+xXv"
+        crossorigin="anonymous"></script>
+{% endblock %}

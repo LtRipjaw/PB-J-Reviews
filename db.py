@@ -1,17 +1,14 @@
 from sqlalchemy import Table, Column, Integer, String, ForeignKey
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_login import UserMixin
-from app import app
+from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy(app)
-migrate = Migrate(app,db)
+db = SQLAlchemy()
 
 class users(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
-    email = db.Column(db.String(50))
-    password = db.Column(db.String(100))
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50))
+    email = Column(String(50))
+    password = Column(String(100))
 
     def __init__(self, name, email, password):
         self.name = name
@@ -34,18 +31,18 @@ class Developers(db.Model):
 
 class Directors(db.Model):
     __tablename__ = "directors"
-    id = Column('id', Integer, primary_key = True),
-    name = Column('name', String, nullable=False),
+    id = Column('id', Integer, primary_key = True)
+    name = Column('name', String, nullable=False)
     age = Column('age', Integer)
 
 
-class Moviess(db.Model):
+class Movies(db.Model):
     __tablename__ = "movies"
     id = Column('id', Integer, primary_key = True)
     title = Column('title', String, nullable=False)
     genre = Column('genre', String)
-    director = Column('director', String, ForeignKey("directors.name"), nullable=False)
-    franchise = Column('franchise', String, ForeignKey("franchises.name"))
+    director = Column('director', String, nullable=False)
+    franchise = Column('franchise', String)
     rating = Column('rating', Integer)
 
 
@@ -54,8 +51,8 @@ class Shows(db.Model):
     id = Column('id', Integer, primary_key = True)
     title = Column('title', String, nullable=False)
     genre = Column('genre', String)
-    director = Column('director', String, ForeignKey("directors.name"), nullable=False)
-    franchise = Column('franchise', String, ForeignKey("franchises.name"))
+    director = Column('director', String, nullable=False)
+    franchise = Column('franchise', String)
     rating = Column('rating', Integer)
 
 
@@ -64,6 +61,6 @@ class Games(db.Model):
     id = Column('id', Integer, primary_key = True)
     title = Column('title', String, nullable=False)
     genre = Column('genre', String)
-    developer = Column('developer', String, ForeignKey("developers.name"), nullable=False)
-    franchise = Column('franchise', String, ForeignKey("franchises.name"))
+    developer = Column('developer', String, nullable=False)
+    franchise = Column('franchise', String)
     rating = Column('rating', Integer)
