@@ -41,8 +41,8 @@ class Movies(db.Model):
     id = Column('id', Integer, primary_key = True)
     title = Column('title', String, nullable=False)
     genre = Column('genre', String)
-    director = Column('director', String, nullable=False)
-    franchise = Column('franchise', String)
+    director = Column('director', String, ForeignKey("directors.name"), nullable=False)
+    franchise = Column('franchise', String, ForeignKey("franchises.name"))
     rating = Column('rating', Integer)
 
 
@@ -51,8 +51,8 @@ class Shows(db.Model):
     id = Column('id', Integer, primary_key = True)
     title = Column('title', String, nullable=False)
     genre = Column('genre', String)
-    director = Column('director', String, nullable=False)
-    franchise = Column('franchise', String)
+    director = Column('director', String, ForeignKey("directors.name"), nullable=False)
+    franchise = Column('franchise', String, ForeignKey("franchises.name"))
     rating = Column('rating', Integer)
 
 
@@ -61,6 +61,6 @@ class Games(db.Model):
     id = Column('id', Integer, primary_key = True)
     title = Column('title', String, nullable=False)
     genre = Column('genre', String)
-    developer = Column('developer', String, nullable=False)
-    franchise = Column('franchise', String)
+    developer = Column('developer', String, ForeignKey("developers.name"), nullable=False)
+    franchise = Column('franchise', String, ForeignKey("franchises.name"))
     rating = Column('rating', Integer)
