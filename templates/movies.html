@@ -22,10 +22,57 @@
                 <td>{{ movie.franchise }}</td>
                 <td>{{ movie.rating }}</td>
                 <td>
-                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#modaledit" data-title="{{movie.title}}" 
-                    data-genre="{{movie.genre}}" data-director="{{movie.director}}" data-franchise="{{movie.franchise}}" data-rating="{{movie.rating}}">Edit</button>
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#modaledit">Edit</button>
+                    <a href="/delete_movie/{{movie.id}}">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
                 </td>
             </tr>
+            <div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Edit Movie Review</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{url_for('edit_movie')}}" method="POST">
+                                <div class="form-group">
+                                    <label for="movie-title" class="col-form-label">Title</label>
+                                    <input type="hidden" name="id" value="{{movie.id}}"></input>
+                                    <input type="text" class="form-control" name="title" value="{{movie.title}}"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="movie-genre" class="col-form-label">Genre</label>
+                                    <input type="hidden" name="id" value="{{movie.id}}"></input>
+                                    <input type="text" class="form-control" name="genre" value="{{movie.genre}}"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="movie-director" class="col-form-label">Director</label>
+                                    <input type="hidden" name="id" value="{{movie.id}}"></input>
+                                    <input type="text" class="form-control" name="director" value="{{movie.director}}"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="movie-franchise" class="col-form-label">Franchise</label>
+                                    <input type="hidden" name="id" value="{{movie.id}}"></input>
+                                    <input type="text" class="form-control" name="franchise" value="{{movie.franchise}}"></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="movie-rating" class="col-form-label">Rating</label>
+                                    <input type="hidden" name="id" value="{{movie.id}}"></input>
+                                    <input type="number" class="form-control" name="rating" value="{{movie.rating}}"></input>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary">Done</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
         </tbody>
     </table>
@@ -33,46 +80,6 @@
 {% endblock %}
 
 {% block modals %}
-<div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Movie Review</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="movie-title" class="col-form-label">Title</label>
-                        <input type="text" class="form-control" name="title">
-                    </div>
-                    <div class="form-group">
-                        <label for="movie-genre" class="col-form-label">Genre</label>
-                        <input type="text" class="form-control" name="genre"></input>
-                    </div>
-                    <div class="form-group">
-                        <label for="movie-director" class="col-form-label">Director</label>
-                        <input class="form-control" name="director"></input>
-                    </div>
-                    <div class="form-group">
-                        <label for="movie-franchise" class="col-form-label">Franchise</label>
-                        <input type="text" class="form-control" name="franchise"></input>
-                    </div>
-                    <div class="form-group">
-                        <label for="movie-rating" class="col-form-label">Rating</label>
-                        <input type="number" class="form-control" name="rating"></input>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Done</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="modal fade" id="modalcreate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -148,58 +155,6 @@
             $('#modalcreate form').submit();
         });
 
-        // Function to show the modaledit
-        function showModalEdit(title, genre, director, franchise, rating) {
-            $('#modaledit').css('display', 'block');
-            $('#modaledit').addClass('show');
-            $('body').addClass('modal-open');
-            $('.modal-backdrop').appendTo('#modaledit');
-
-            // Set values in the modal
-            $('#modaledit input[name="title"]').val(title);
-            $('#modaledit input[name="genre"]').val(genre);
-            $('#modaledit input[name="director"]').val(director);
-            $('#modaledit input[name="franchise"]').val(franchise);
-            $('#modaledit input[name="rating"]').val(rating);
-        }
-
-        // When clicking on the "Edit" button in modaledit
-        $('#modaledit .btn-primary').on('click', function() {
-            // Process editing logic here
-            // For example, you can submit the form or update data via AJAX
-        });
-
-        // When clicking on the close button or backdrop
-        $('#modaledit .close, .modal-backdrop').on('click', function() {
-            $('#modaledit').css('display', 'none');
-            $('#modaledit').removeClass('show');
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').appendTo(document.body);
-        });
-
-        // When clicking on the "Cancel" button in modaledit
-        $('#modaledit .btn-secondary').on('click', function() {
-            $('#modaledit').css('display', 'none');
-            $('#modaledit').removeClass('show');
-            $('body').removeClass('modal-open');
-            $('.modal-backdrop').appendTo(document.body);
-        });
-
-        // Example: When clicking on the "Edit" button for a specific movie
-        $('[data-target="#modaledit"]').on('click', function() {
-            var title = $(this).data('title');
-            var genre = $(this).data('genre');
-            var director = $(this).data('director');
-            var franchise = $(this).data('franchise');
-            var rating = $(this).data('rating');
-            showModalEdit(title, genre, director, franchise, rating);
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function() {
-        // When the modalcreate is shown
         $('#modalcreate').on('shown.bs.modal', function () {
             // Focus on the first input field
             $('#modalcreate input[name="title"]').focus();
@@ -211,28 +166,34 @@
             $('#modalcreate input').val('');
         });
 
-        // When the "Done" button in modalcreate is clicked
-        $('#modalcreate .btn-primary').on('click', function () {
-            // Submit the form
-            $('#modalcreate form').submit();
+        // Function to show the modaledit
+        function showModalEdit() {
+            $('#modaledit').css('display', 'block');
+            $('#modaledit').addClass('show');
+            $('body').addClass('modal-open');
+            $('.modal-backdrop').appendTo('#modaledit');
+        }
+
+        function hideModalEdit() {
+            $('#modaledit').css('display', 'block');
+            $('#modaledit').removeClass('show');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').appendTo('#modaledit');
+        }
+
+        // When clicking on the "Edit" button
+        $('[data-target="#modaledit"]').on('click', function() {
+            showModalEdit();
         });
 
-        // When the modaledit is shown
-        $('#modaledit').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            var title = button.data('title');
-            var genre = button.data('genre');
-            var director = button.data('director');
-            var franchise = button.data('franchise');
-            var rating = button.data('rating');
+        // When clicking on the "Done" button in modaledit
+        $('#modaledit .btn-primary').on('click', function() {
+            $('#modaledit form').submit();
+        });
 
-            var modal = $(this);
-            modal.find('.modal-title').text('Edit Movie Review');
-            modal.find('input[name="title"]').val(title);
-            modal.find('input[name="genre"]').val(genre);
-            modal.find('input[name="director"]').val(director);
-            modal.find('input[name="franchise"]').val(franchise);
-            modal.find('input[name="rating"]').val(rating);
+        // When clicking on the "Cancel" button in modaledit
+        $('#modaledit .btn-secondary').on('click', function() {
+            hideModalEdit();
         });
     });
 </script>

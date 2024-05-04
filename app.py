@@ -83,17 +83,43 @@ def movies():
 @app.route('/create_movie', methods = ['POST'])
 def create_movie():
     if request.method == 'POST':
-        title = request.form['title']
-        genre = request.form['genre']
-        director = request.form['director']
-        franchise = request.form['franchise']
-        rating = request.form['rating']
+        new_movie = Movies(
+            title = request.form.get('title'),
+            genre = request.form.get('genre'),
+            director = request.form.get('director'),
+            franchise = request.form.get('franchise'),
+            rating = request.form.get('rating')
+        )
 
-        new_movie = Movies(title, genre, director, franchise, rating)
         db.session.add(new_movie)
+        flash('Succesfully Created!')
         db.session.commit()
 
         return redirect(url_for('movies'))
+    
+@app.route('/edit_movie', methods = ['POST'])
+def edit_movie():
+    if request.method == 'POST':
+        movie = Movies.query.get(request.form.get('id'))
+
+        movie.title = request.form.get('title')
+        movie.genre = request.form.get('genre')
+        movie.director = request.form.get('director')
+        movie.franchise = request.form.get('franchise')
+        movie.rating = request.form.get('rating')
+
+        db.session.commit()
+        flash('Succesfully Updated!')
+
+        return redirect(url_for('movies'))
+
+@app.route('/delete_movie/<id>', methods = ['GET', 'POST'])
+def delete_movie(id):
+    movie = Movies.query.get(id)
+    db.session.delete(movie)
+    db.session.commit()
+    flash('Deleted Successfully!')
+    return redirect(url_for('movies'))
     
 @app.route("/games/")
 def games():
@@ -103,37 +129,87 @@ def games():
 @app.route('/create_game', methods = ['POST'])
 def create_game():
     if request.method == 'POST':
-        title = request.form['title']
-        genre = request.form['genre']
-        developer = request.form['director']
-        franchise = request.form['franchise']
-        rating = request.form['rating']
+        new_game = Games(
+            title = request.form.get('title'),
+            genre = request.form.get('genre'),
+            developer = request.form.get('developer'),
+            franchise = request.form.get('franchise'),
+            rating = request.form.get('rating')
+        )
 
-        new_game = Games(title, genre, developer, franchise, rating)
         db.session.add(new_game)
         db.session.commit()
 
         return redirect(url_for('games'))
+    
+@app.route('/edit_game', methods = ['POST'])
+def edit_game():
+    if request.method == 'POST':
+        game = Games.query.get(request.form.get('id'))
+
+        game.title = request.form.get('title')
+        game.genre = request.form.get('genre')
+        game.developer = request.form.get('developer')
+        game.franchise = request.form.get('franchise')
+        game.rating = request.form.get('rating')
+
+        db.session.commit()
+        flash('Succesfully Updated!')
+
+        return redirect(url_for('games'))
+
+@app.route('/delete_game/<id>', methods = ['GET', 'POST'])
+def delete_game(id):
+    game = Games.query.get(id)
+    db.session.delete(game)
+    db.session.commit()
+    flash('Deleted Successfully!')
+    return redirect(url_for('games'))
     
 @app.route("/shows/")
 def shows():
     shows = Shows.query.all()
     return render_template('shows.html', shows=shows)
 
-@app.route('/create_show', methods = ['POST'])
+@app.route('/create_show/', methods = ['POST'])
 def create_show():
     if request.method == 'POST':
-        title = request.form['title']
-        genre = request.form['genre']
-        director = request.form['director']
-        franchise = request.form['franchise']
-        rating = request.form['rating']
+        new_show = Shows(
+            title = request.form.get('title'),
+            genre = request.form.get('genre'),
+            director = request.form.get('director'),
+            franchise = request.form.get('franchise'),
+            rating = request.form.get('rating')
+        )
 
-        new_show = Shows(title, genre, director, franchise, rating)
         db.session.add(new_show)
         db.session.commit()
 
         return redirect(url_for('shows'))
+    
+@app.route('/edit_show/', methods = ['POST'])
+def edit_show():
+    if request.method == 'POST':
+        show = Shows.query.get(request.form.get('id'))
+
+        show.title = request.form.get('title')
+        show.genre = request.form.get('genre')
+        show.director = request.form.get('director')
+        show.franchise = request.form.get('franchise')
+        show.rating = request.form.get('rating')
+
+        db.session.commit()
+        flash('Succesfully Updated!')
+
+        return redirect(url_for('shows'))
+
+@app.route('/delete_show/<id>', methods = ['GET', 'POST'])
+def delete_show(id):
+    show = Shows.query.get(id)
+    db.session.delete(show)
+    db.session.commit()
+    flash('Deleted Successfully!')
+    return redirect(url_for('shows'))
 
 @app.route("/logout/")
 def logout():
