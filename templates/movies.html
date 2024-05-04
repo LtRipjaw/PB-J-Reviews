@@ -22,7 +22,8 @@
                 <td>{{ movie.franchise }}</td>
                 <td>{{ movie.rating }}</td>
                 <td>
-                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#modaledit">Edit</button>
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#modaledit" data-title="{{movie.title}}" 
+                    data-genre="{{movie.genre}}" data-director="{{movie.director}}" data-franchise="{{movie.franchise}}" data-rating="{{movie.rating}}">Edit</button>
                 </td>
             </tr>
             {% endfor %}
@@ -36,7 +37,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Movie Review</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Movie Review</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -77,7 +78,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Create New Movie Review</h5>
+                <h5 class="modal-title" id="createModalLabel">Create New Movie Review</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -113,13 +114,126 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
-        integrity="sha384-ZSTVPPVoK4Z83IYJM5lYjWPG+YtF/er1z+LcbL5ZCVXDD9dZsiqFT+0OAlaTWfAA"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+gbgxc5wc9eVkRx03WO6c6lvz0Ww53cu1WM+xXv"
-        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function() {
+        // Function to show the modalcreate
+        function showModalCreate() {
+            $('#modalcreate').css('display', 'block');
+            $('#modalcreate').addClass('show');
+            $('body').addClass('modal-open');
+            $('.modal-backdrop').appendTo('#modalcreate');
+        }
+
+        // Function to hide the modalcreate
+        function hideModalCreate() {
+            $('#modalcreate').css('display', 'none');
+            $('#modalcreate').removeClass('show');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').appendTo(document.body);
+        }
+
+        // When clicking on the "Add New Review" button
+        $('[data-target="#modalcreate"]').on('click', function() {
+            showModalCreate();
+        });
+
+        // When clicking on the "Cancel" button in modalcreate
+        $('#modalcreate .btn-secondary').on('click', function() {
+            hideModalCreate();
+        });
+
+        // When clicking on the "Done" button in modalcreate
+        $('#modalcreate .btn-primary').on('click', function() {
+            $('#modalcreate form').submit();
+        });
+
+        // Function to show the modaledit
+        function showModalEdit(title, genre, director, franchise, rating) {
+            $('#modaledit').css('display', 'block');
+            $('#modaledit').addClass('show');
+            $('body').addClass('modal-open');
+            $('.modal-backdrop').appendTo('#modaledit');
+
+            // Set values in the modal
+            $('#modaledit input[name="title"]').val(title);
+            $('#modaledit input[name="genre"]').val(genre);
+            $('#modaledit input[name="director"]').val(director);
+            $('#modaledit input[name="franchise"]').val(franchise);
+            $('#modaledit input[name="rating"]').val(rating);
+        }
+
+        // When clicking on the "Edit" button in modaledit
+        $('#modaledit .btn-primary').on('click', function() {
+            // Process editing logic here
+            // For example, you can submit the form or update data via AJAX
+        });
+
+        // When clicking on the close button or backdrop
+        $('#modaledit .close, .modal-backdrop').on('click', function() {
+            $('#modaledit').css('display', 'none');
+            $('#modaledit').removeClass('show');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').appendTo(document.body);
+        });
+
+        // When clicking on the "Cancel" button in modaledit
+        $('#modaledit .btn-secondary').on('click', function() {
+            $('#modaledit').css('display', 'none');
+            $('#modaledit').removeClass('show');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').appendTo(document.body);
+        });
+
+        // Example: When clicking on the "Edit" button for a specific movie
+        $('[data-target="#modaledit"]').on('click', function() {
+            var title = $(this).data('title');
+            var genre = $(this).data('genre');
+            var director = $(this).data('director');
+            var franchise = $(this).data('franchise');
+            var rating = $(this).data('rating');
+            showModalEdit(title, genre, director, franchise, rating);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // When the modalcreate is shown
+        $('#modalcreate').on('shown.bs.modal', function () {
+            // Focus on the first input field
+            $('#modalcreate input[name="title"]').focus();
+        });
+
+        // When the modalcreate is hidden
+        $('#modalcreate').on('hidden.bs.modal', function () {
+            // Clear all input fields
+            $('#modalcreate input').val('');
+        });
+
+        // When the "Done" button in modalcreate is clicked
+        $('#modalcreate .btn-primary').on('click', function () {
+            // Submit the form
+            $('#modalcreate form').submit();
+        });
+
+        // When the modaledit is shown
+        $('#modaledit').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var title = button.data('title');
+            var genre = button.data('genre');
+            var director = button.data('director');
+            var franchise = button.data('franchise');
+            var rating = button.data('rating');
+
+            var modal = $(this);
+            modal.find('.modal-title').text('Edit Movie Review');
+            modal.find('input[name="title"]').val(title);
+            modal.find('input[name="genre"]').val(genre);
+            modal.find('input[name="director"]').val(director);
+            modal.find('input[name="franchise"]').val(franchise);
+            modal.find('input[name="rating"]').val(rating);
+        });
+    });
+</script>
 {% endblock %}
